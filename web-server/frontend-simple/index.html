@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Challenges</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>CTF</h1>
+        <div class="user-info" id="userInfo" style="display: none;">
+            <span id="usernameDisplay" class="username-display">
+                <span id="username" class="username clickable"></span>
+                <span id="userAlias" class="user-alias" style="display: none;">
+                    (<span id="userAliasText" class="clickable"></span>)
+                    <span id="removeAlias" class="remove-alias" title="Remove alias">×</span>
+                </span>
+            </span>
+            <span id="userTokens" class="tokens"></span>
+            <span id="userPoints" class="points"></span>
+        </div>
+    </header>
+
+    <main>
+        <div id="authError" class="auth-error" style="display: none;">
+            <h2>Authentication Required</h2>
+            <p>Your token might have expired. Please refresh and authenticate with AWS Verified Access to access the CTF challenges.</p>
+        </div>
+
+        <div class="flag-note" id="flagNote" style="display: none;">
+            <p><strong>Note:</strong> All flags contain only alphanumeric characters (no spaces or brackets) except for Proof of Work challenges, and do not exceed 500 characters in length. If you think the flag is flag{flagvalue}, just submit "flagvalue" without the flag{} wrapper. Besides the PoW challenges, flags are case-insensitive.</p>
+        </div>
+
+        <div id="challengesList" class="challenges-container" style="display: none;">
+            <!-- Challenges will be populated here -->
+        </div>
+
+        <div id="examSection" class="exam-section" style="display: none;">
+            <button id="goToExamBtn" class="exam-btn">Go to Exam</button>
+        </div>
+
+        <div id="examList" class="challenges-container" style="display: none;">
+            <button id="examBackBtn" class="back-btn">← Back to Challenges</button>
+            <h2>Exam</h2>
+            <div class="exam-story">
+                <p id="examWelcome" class="exam-agent-welcome">Welcome CSIS Agent</p>
+                
+                <p>Welcome to your new job as a computer security expert at the Canadian Security Intelligence Service. Your job is to solve computer security roadblocks put in the path of our agents that are preventing us from reaching Canada's strategic goals. We need you to apply your skills and submit the solutions which will be transmitted to our agents in the field, allowing them to move further into foreign networks, or buildings and then transmit further issues back to you to solve.</p>
+                
+                <p>In order to protect field agents, we need to ensure we are transmitting only correct solutions, lest the agents trigger alarms or be captured. Wrong solutions can only be covered so many times before a field agent is compromised and must abort. Thus our submission system for this requires the use of a token per submission. A token can only be used once, and will be burned regardless of if the submitted answer is correct or not.</p>
+                
+                <p>We're unsure how many problems you're going to need to solve to support our field agent to the final goal but it will likely be around 2-4. That means you can only afford one wrong answer per challenge. Decisions have consequences.</p>
+                
+                <p><strong>We're counting on you.</strong></p>
+                
+                <p><strong>Good luck.</strong></p>
+            </div>
+            <!-- Exam challenges will be populated here -->
+        </div>
+
+        <div id="challengeDetail" class="challenge-detail" style="display: none;">
+            <button id="backBtn" class="back-btn">← Back to Challenges</button>
+            <div class="challenge-content">
+                <h2 id="challengeTitle"></h2>
+                <p id="challengeDescription"></p>
+                <div class="challenge-meta">
+                    <span id="challengePoints" class="points"></span>
+                    <span id="challengeStatus" class="status"></span>
+                </div>
+                <div class="challenge-text-asset" id="challengeTextAsset"></div>
+                <div class="challenge-files" id="challengeFiles"></div>
+                <div class="flag-submission">
+                    <input type="text" id="flagInput" placeholder="Enter flag here..." maxlength="500">
+                    <button id="submitFlag">Submit Flag</button>
+                </div>
+                <div id="flagResult" class="flag-result"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

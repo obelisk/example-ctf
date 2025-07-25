@@ -1,0 +1,77 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    logging:
+      driver: journald
+    environment:
+      POSTGRES_USER: change_this_to_your_username
+      POSTGRES_DB: ctfservice
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGPORT: 50052
+    expose:
+      - "50052"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    env_file:
+      - backend/.env
+    networks:
+      - ctf-network
+    command: ["postgres", "-c", "log_statement=all"]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "change_this_to_your_username", "-d", "ctfservice"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    container_name: backend
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+    logging:
+      driver: journald
+    environment:
+      - LOG_LEVEL=info
+    networks:
+      - ctf-network
+    env_file:
+      - backend/.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://backend:8081/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    expose:
+      - "8080"    # API and simplified frontend
+      - "8081"    # Health check endpoint
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  nginx:
+    image: nginxproxy/nginx-proxy
+    container_name: ctf-nginx
+    logging:
+      driver: journald
+    depends_on:
+      - backend
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx_conf/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ./nginx_conf/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - ctf-network
+      - host
+    restart: unless-stopped
+
+volumes:
+  postgres:
+
+networks:
+  ctf-network:
+  host:
+    driver: bridge

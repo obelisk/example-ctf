@@ -1,0 +1,38 @@
+http:
+  hostname: ""
+  port: 8080
+  requestSizeLimitBytes: 500
+  timeout: "10s"
+  rateLimit:
+    enabled: true
+    requestsPerSec: 4.0
+    burstSize: 20
+    windowSize: "1s"
+    cleanupInterval: "5m"
+    maxClients: 512
+
+healthCheck:
+  hostname: ""
+  port: 8081
+
+auth:
+  testMode:
+    enabled: false
+    testUser: thanh.nguyen@smartcontract.com
+  expectedVerifiedAccessInstanceArn: "arn:aws:ec2:..."
+  expectedIssuer: "https://sso.okta.com"
+  awsRegion: ""
+  publicKeyCacheTTL: "5m"
+
+database:
+  hostname: "postgres"
+  port: "50052"
+  user: "change_this_to_your_username"
+  database: "ctfservice"
+  sslMode: "disable"
+
+awsConfig:
+  bucketName: ""
+
+slack:
+  leaderboardInterval: "30m"
